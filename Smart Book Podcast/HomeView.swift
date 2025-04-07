@@ -37,8 +37,8 @@ struct HomeView: View {
 
             // Two horizontal cells
             HStack(spacing: 16) {
-                CellView(imageName: "hand.raised", badgeCount: 6, label: "Approvals")
-                CellView(imageName: "text.rectangle.page", badgeCount: 2, label: "Notes")
+                CardView(imageName: "hand.raised", badgeCount: 6, label: "Approvals")
+                CardView(imageName: "text.rectangle.page", badgeCount: 2, label: "Notes")
             }
             .padding(.horizontal)
 
@@ -61,13 +61,14 @@ struct HomeView: View {
                 .frame(width: 180, height: 40)
                 .background(.white)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
+                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
             }
             .padding()
 
             ScrollView {
                 VStack(spacing: 12) {
                     ForEach(0..<5) { index in
-                        CustomListItemView(
+                        BookCellView(
                             title: "Board Meeting Q3",
                             date: "24 September, 2024",
                             subtitle: "Board of Director, ESG Committee"
@@ -81,7 +82,7 @@ struct HomeView: View {
     }
 }
 
-struct CustomListItemView: View {
+struct BookCellView: View {
     let title: String
     let date: String
     let subtitle: String
@@ -102,13 +103,17 @@ struct CustomListItemView: View {
 
                 Spacer()
 
-                Button(action: {}) {
+                Menu {
+                    Button("Open Agenda") { }
+                    Button("See meeting details") { }
+                    Button("See book updates") { }
+                    Button("Generate Book podcast") { }
+                } label: {
                     Image(systemName: "ellipsis")
                         .rotationEffect(.degrees(90))
                         .padding(8)
                         .foregroundStyle(Color(UIColor.action))
                 }
-                .buttonStyle(.plain)
                 .padding(.trailing, 8)
             }
 
@@ -174,7 +179,7 @@ struct IconButton: View {
     }
 }
 
-struct CellView: View {
+struct CardView: View {
     let imageName: String
     let badgeCount: Int
     let label: String
@@ -199,6 +204,7 @@ struct CellView: View {
                     if badgeCount > 0 {
                         Text("\(badgeCount)")
                             .font(.callout)
+                            .fontWeight(.semibold)
                             .foregroundColor(.white)
                             .padding(8)
                             .background(Color.red)
@@ -222,6 +228,7 @@ struct CellView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .frame(height: 82)
+        .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
     }
 }
 
