@@ -64,15 +64,95 @@ struct HomeView: View {
             }
             .padding()
 
-            // List on the bottom
-            List {
-                ForEach(1..<6) { index in
-                    Text("List Item \(index)")
+            ScrollView {
+                VStack(spacing: 12) {
+                    ForEach(0..<5) { index in
+                        CustomListItemView(
+                            title: "Board Meeting Q3",
+                            date: "24 September, 2024",
+                            subtitle: "Board of Director, ESG Committee"
+                        )
+                    }
                 }
             }
         }
         .padding(.top)
         .background(Color(UIColor.background))
+    }
+}
+
+struct CustomListItemView: View {
+    let title: String
+    let date: String
+    let subtitle: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(.headline)
+                    Text(date)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
+
+                Spacer()
+
+                Button(action: {}) {
+                    Image(systemName: "ellipsis")
+                        .rotationEffect(.degrees(90))
+                        .padding(8)
+                        .foregroundStyle(Color(UIColor.action))
+                }
+                .buttonStyle(.plain)
+                .padding(.trailing, 8)
+            }
+
+            HStack {
+                HStack(spacing: 8) {
+                    TagButton(text: "New")
+                    TagButton(text: "Approvals")
+                }
+
+                Spacer()
+
+                Button {
+                    // Action
+                } label: {
+                    Image(systemName: "headphones")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(.blue)
+                        .frame(width: 18, height: 18)
+                        .padding()
+                }
+                .frame(width: 48, height: 32)
+                .background(Color.blue.opacity(0.05))
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+        }
+        .padding()
+        .background(Color(.systemBackground))
+        .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
+    }
+}
+
+// MARK: - Tag Button
+struct TagButton: View {
+    let text: String
+
+    var body: some View {
+        Text(text)
+            .font(.caption)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.blue.opacity(0.1))
+            .foregroundColor(.black)
+            .clipShape(Capsule())
     }
 }
 
