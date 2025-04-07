@@ -117,16 +117,47 @@ struct PlayerView: View {
     }
 
     func loadAudio() {
-        guard let url = Bundle.main.url(forResource: "sample", withExtension: "mp3") else {
-            print("MP3 file not found.")
+        guard let remoteURL = URL(string: "https://thepodcastexchange.ca/s/Porsche-Macan-July-5-2018-1.mp3") else {
+            print("Invalid URL.")
             return
         }
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            duration = audioPlayer?.duration ?? 1
-        } catch {
-            print("Failed to load audio: \(error)")
-        }
+
+        // Download the file
+        URLSession.shared.downloadTask(with: remoteURL) { tempURL, response, error in
+            if let error = error {
+                print("Download error: \(error)")
+                return
+            }
+
+            guard let tempURL = tempURL else {
+                print("No file URL.")
+                return
+            }
+
+            do {
+                // Move to a persistent location (optional)
+                let fileManager = FileManager.default
+                let caches = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
+                let localURL = caches.appendingPathComponent("downloaded.mp3")
+
+                if fileManager.fileExists(atPath: localURL.path) {
+                    try fileManager.removeItem(at: localURL)
+                }
+                try fileManager.copyItem(at: tempURL, to: localURL)
+
+                // Create player
+                audioPlayer = try AVAudioPlayer(contentsOf: localURL)
+                audioPlayer?.prepareToPlay()
+
+                DispatchQueue.main.async {
+                    duration = audioPlayer?.duration ?? 1
+                }
+
+            } catch {
+                print("Failed to prepare audio: \(error)")
+            }
+
+        }.resume()
     }
 
     func togglePlayback() {
