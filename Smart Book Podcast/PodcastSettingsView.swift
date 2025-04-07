@@ -11,6 +11,7 @@ struct PodcastSettingsView: View {
     @Environment(\.dismiss) var dismiss
 
     @Binding var isGenerating: Bool
+    @Binding var isPodcastReady: Bool
 
     @State private var selectedLength = "30 min"
     @State private var selectedSpeaker1 = "Jeremy (US English)"
@@ -88,8 +89,9 @@ struct PodcastSettingsView: View {
                         dismiss()
                         isGenerating.toggle()
 
-                        Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { timer in
+                        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
                             isGenerating = false
+                            isPodcastReady = true
                         }
                     }
                 }
@@ -99,6 +101,7 @@ struct PodcastSettingsView: View {
 }
 
 #Preview {
-    @Previewable @State var binding = true
-    PodcastSettingsView(isGenerating: $binding)
+    @Previewable @State var isGenerating = true
+    @Previewable @State var isPodcastReady = true
+    PodcastSettingsView(isGenerating: $isGenerating, isPodcastReady: $isPodcastReady)
 }

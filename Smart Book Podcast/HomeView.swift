@@ -10,7 +10,9 @@ import SwiftUI
 struct HomeView: View {
 
     @State private var showSettings = false
+    @State private var showPlayer = false
     @State private var isGenerating = false
+    @State private var isPodcastReady = false
 
     var body: some View {
         VStack(spacing: 16) {
@@ -77,7 +79,9 @@ struct HomeView: View {
                             date: "24 September, 2024",
                             subtitle: "Board of Director, ESG Committee",
                             showSettings: $showSettings,
-                            isGenerating: $isGenerating
+                            showPlayer: $showPlayer,
+                            isGenerating: $isGenerating,
+                            isPodcastReady: $isPodcastReady
                         )
                     }
                 }
@@ -86,7 +90,10 @@ struct HomeView: View {
         .padding(.top)
         .background(Color(UIColor.background))
         .sheet(isPresented: $showSettings) {
-            PodcastSettingsView(isGenerating: $isGenerating)
+            PodcastSettingsView(isGenerating: $isGenerating, isPodcastReady: $isPodcastReady)
+        }
+        .sheet(isPresented: $showPlayer) {
+            PlayerView()
         }
     }
 }
@@ -97,7 +104,9 @@ struct BookCellView: View {
     let subtitle: String
 
     @Binding var showSettings: Bool
+    @Binding var showPlayer: Bool
     @Binding var isGenerating: Bool
+    @Binding var isPodcastReady: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -116,10 +125,10 @@ struct BookCellView: View {
                 Spacer()
 
                 Menu {
-                    Button("Open Agenda") { }
+                    Button("Open agenda") { }
                     Button("See meeting details") { }
                     Button("See book updates") { }
-                    Button("Generate Book podcast") {
+                    Button("Generate book podcast") {
                         showSettings.toggle()
                     }
                 } label: {
@@ -143,13 +152,13 @@ struct BookCellView: View {
                     HStack {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: .gray))
-                        Text("Generating podcat")
+                        Text("Generating podcast")
                             .font(.caption)
                             .foregroundStyle(.gray)
                     }
-                } else {
+                } else if isPodcastReady && title == "Board Meeting Q1" {
                     Button {
-                        // Action
+                        showPlayer.toggle()
                     } label: {
                         Image(systemName: "headphones")
                             .resizable()
