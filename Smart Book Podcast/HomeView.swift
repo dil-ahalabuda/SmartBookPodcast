@@ -18,29 +18,8 @@ struct HomeView: View {
                 Spacer()
 
                 HStack(spacing: 8) {
-                    Button {
-                        // Action
-                    } label: {
-                        Image(systemName: "magnifyingglass")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundStyle(.black)
-                            .frame(width: 24, height: 24)
-                            .padding()
-                    }
-                    .frame(width: 48, height: 48)
-
-                    Button {
-                        // Action
-                    } label: {
-                        Image(systemName: "bell.badge")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundStyle(.black)
-                            .frame(width: 24, height: 24)
-                            .padding()
-                    }
-                    .frame(width: 48, height: 48)
+                    IconButton(systemName: "magnifyingglass")
+                    IconButton(systemName: "bell.badge")
 
                     Button {
                         // Action
@@ -58,15 +37,8 @@ struct HomeView: View {
 
             // Two horizontal cells
             HStack(spacing: 16) {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.blue.opacity(0.2))
-                    .frame(height: 100)
-                    .overlay(Text("Cell 1"))
-
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.green.opacity(0.2))
-                    .frame(height: 100)
-                    .overlay(Text("Cell 2"))
+                CellView(imageName: "hand.raised", badgeCount: 6, label: "Approvals")
+                CellView(imageName: "text.rectangle.page", badgeCount: 2, label: "Notes")
             }
             .padding(.horizontal)
 
@@ -78,6 +50,72 @@ struct HomeView: View {
             }
         }
         .padding(.top)
+        .background(Color(UIColor.background))
+    }
+}
+
+struct IconButton: View {
+    let systemName: String
+
+    var body: some View {
+        Button {
+            // Action
+        } label: {
+            Image(systemName: systemName)
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(.black)
+                .frame(width: 24, height: 24)
+                .padding()
+        }
+        .frame(width: 48, height: 48)
+    }
+}
+
+struct CellView: View {
+    let imageName: String
+    let badgeCount: Int
+    let label: String
+
+    var body: some View {
+        ZStack(alignment: .topLeading) {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(.white)
+
+            VStack {
+                HStack {
+                    Image(systemName: imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
+                        .padding([.leading, .top], 16)
+
+                    Spacer()
+
+                    if badgeCount > 0 {
+                        Text("\(badgeCount)")
+                            .font(.callout)
+                            .foregroundColor(.white)
+                            .padding(8)
+                            .background(Color.red)
+                            .clipShape(Circle())
+                            .padding([.trailing, .top], 16)
+                    }
+                }
+
+                Spacer()
+
+                HStack {
+                    Text(label)
+                        .font(.headline)
+                        .padding([.leading, .bottom], 16)
+
+                    Spacer()
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(height: 82)
     }
 }
 
