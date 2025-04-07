@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct HomeView: View {
+
+    @State private var showSettings = false
+    @State private var isGenerating = false
+
     var body: some View {
         VStack(spacing: 16) {
             HStack {
@@ -69,9 +73,11 @@ struct HomeView: View {
                 VStack(spacing: 12) {
                     ForEach(0..<5) { index in
                         BookCellView(
-                            title: "Board Meeting Q3",
+                            title: "Board Meeting Q\(index + 1)",
                             date: "24 September, 2024",
-                            subtitle: "Board of Director, ESG Committee"
+                            subtitle: "Board of Director, ESG Committee",
+                            showSettings: $showSettings,
+                            isGenerating: $isGenerating
                         )
                     }
                 }
@@ -79,6 +85,9 @@ struct HomeView: View {
         }
         .padding(.top)
         .background(Color(UIColor.background))
+        .sheet(isPresented: $showSettings) {
+            PodcastSettingsView(isGenerating: $isGenerating)
+        }
     }
 }
 
@@ -86,6 +95,9 @@ struct BookCellView: View {
     let title: String
     let date: String
     let subtitle: String
+
+    @Binding var showSettings: Bool
+    @Binding var isGenerating: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -107,7 +119,9 @@ struct BookCellView: View {
                     Button("Open Agenda") { }
                     Button("See meeting details") { }
                     Button("See book updates") { }
-                    Button("Generate Book podcast") { }
+                    Button("Generate Book podcast") {
+                        showSettings.toggle()
+                    }
                 } label: {
                     Image(systemName: "ellipsis")
                         .rotationEffect(.degrees(90))
@@ -125,19 +139,30 @@ struct BookCellView: View {
 
                 Spacer()
 
-                Button {
-                    // Action
-                } label: {
-                    Image(systemName: "headphones")
-                        .resizable()
-                        .scaledToFit()
-                        .foregroundStyle(.blue)
-                        .frame(width: 18, height: 18)
-                        .padding()
+                if isGenerating && title == "Board Meeting Q1" {
+                    HStack {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .gray))
+                        Text("Generating podcat")
+                            .font(.caption)
+                            .foregroundStyle(.gray)
+                    }
+                } else {
+                    Button {
+                        // Action
+                    } label: {
+                        Image(systemName: "headphones")
+                            .resizable()
+                            .scaledToFit()
+                            .foregroundStyle(.blue)
+                            .frame(width: 18, height: 18)
+                            .padding()
+                    }
+                    .frame(width: 48, height: 32)
+                    .background(Color.blue.opacity(0.05))
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
-                .frame(width: 48, height: 32)
-                .background(Color.blue.opacity(0.05))
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+
             }
         }
         .padding()
