@@ -42,6 +42,28 @@ struct HomeView: View {
             }
             .padding(.horizontal)
 
+            HStack {
+                Text("Books")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+
+                Spacer()
+
+                Button {
+                    // Action
+                } label: {
+                    Text("Upcoming meetings")
+                        .font(.system(size: 14))
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.black)
+                        .padding()
+                }
+                .frame(width: 180, height: 40)
+                .background(.white)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+            .padding()
+
             // List on the bottom
             List {
                 ForEach(1..<6) { index in
@@ -87,8 +109,10 @@ struct CellView: View {
                     Image(systemName: imageName)
                         .resizable()
                         .scaledToFit()
+                        .foregroundStyle(Color(UIColor.action))
                         .frame(width: 24, height: 24)
-                        .padding([.leading, .top], 16)
+                        .padding(.leading, 16)
+                        .padding(.top, 8)
 
                     Spacer()
 
@@ -99,7 +123,8 @@ struct CellView: View {
                             .padding(8)
                             .background(Color.red)
                             .clipShape(Circle())
-                            .padding([.trailing, .top], 16)
+                            .padding(.trailing, 16)
+                            .padding(.top, 8)
                     }
                 }
 
@@ -107,7 +132,8 @@ struct CellView: View {
 
                 HStack {
                     Text(label)
-                        .font(.headline)
+                        .font(.callout)
+                        .fontWeight(.semibold)
                         .padding([.leading, .bottom], 16)
 
                     Spacer()
