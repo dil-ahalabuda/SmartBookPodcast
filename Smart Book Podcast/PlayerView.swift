@@ -106,7 +106,7 @@ struct PlayerView: View {
         }
         .padding()
         .onAppear {
-            loadAudio()
+            loadAudioMock()
         }
         .onReceive(timer) { _ in
             guard let player = audioPlayer, player.isPlaying else { return }
@@ -114,6 +114,19 @@ struct PlayerView: View {
         }
         .background(Color(.background))
         .edgesIgnoringSafeArea(.bottom)
+    }
+
+    func loadAudioMock() {
+        guard let url = Bundle.main.url(forResource: "sample", withExtension: "mp3") else {
+            print("MP3 file not found.")
+            return
+        }
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: url)
+            duration = audioPlayer?.duration ?? 1
+        } catch {
+            print("Failed to load audio: \(error)")
+        }
     }
 
     func loadAudio() {
