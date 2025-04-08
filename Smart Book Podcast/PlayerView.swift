@@ -51,12 +51,12 @@ struct PlayerView: View {
 
             // Title & Subtitle
             VStack(spacing: 4) {
-                Text("Board Meeting Q1")
+                Text("Financial Review & Planning 2025 Q1")
                     .font(.title2)
                     .bold()
                     .multilineTextAlignment(.center)
 
-                Text("24 September, 2024")
+                Text("31 Mach, 2025")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }

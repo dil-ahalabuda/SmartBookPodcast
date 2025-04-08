@@ -14,6 +14,14 @@ struct HomeView: View {
     @State private var isGenerating = false
     @State private var isPodcastReady = false
 
+    private var bookCellViewModels: [BookCellViewModel] = [
+        BookCellViewModel(title: "Financial Review & Planning 2025 Q1", date: "31 Mach, 2025", subtitle: "Board of Director, ESG Committee"),
+        BookCellViewModel(title: "ESG Committee Meeting Q1", date: "28 Mach, 2025", subtitle: "Board of Director, ESG Committee"),
+        BookCellViewModel(title: "ESG & Sustainability Forecast Review Meeting", date: "20 Mach, 2025", subtitle: "Board of Director, ESG Committee"),
+        BookCellViewModel(title: "Financial Review & Planning 2025 Q2", date: "21 Mach, 2025", subtitle: "ESG Committee"),
+        BookCellViewModel(title: "Boards Planning 2025 Q2", date: "18 Mach, 2025", subtitle: "Board of Director, ESG Committee"),
+    ]
+
     var body: some View {
         VStack(spacing: 16) {
             HStack {
@@ -75,9 +83,7 @@ struct HomeView: View {
                 VStack(spacing: 12) {
                     ForEach(0..<5) { index in
                         BookCellView(
-                            title: "Board Meeting Q\(index + 1)",
-                            date: "24 September, 2024",
-                            subtitle: "Board of Director, ESG Committee",
+                            viewModel: bookCellViewModels[index],
                             showSettings: $showSettings,
                             showPlayer: $showPlayer,
                             isGenerating: $isGenerating,
@@ -98,10 +104,14 @@ struct HomeView: View {
     }
 }
 
-struct BookCellView: View {
+struct BookCellViewModel {
     let title: String
     let date: String
     let subtitle: String
+}
+
+struct BookCellView: View {
+    let viewModel: BookCellViewModel
 
     @Binding var showSettings: Bool
     @Binding var showPlayer: Bool
@@ -112,12 +122,12 @@ struct BookCellView: View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(title)
+                    Text(viewModel.title)
                         .font(.headline)
-                    Text(date)
+                    Text(viewModel.date)
                         .font(.subheadline)
                         .foregroundColor(.gray)
-                    Text(subtitle)
+                    Text(viewModel.subtitle)
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
@@ -148,7 +158,7 @@ struct BookCellView: View {
 
                 Spacer()
 
-                if isGenerating && title == "Board Meeting Q1" {
+                if isGenerating && viewModel.title == "Financial Review & Planning 2025 Q1" {
                     HStack {
                         ProgressView()
                             .progressViewStyle(CircularProgressViewStyle(tint: .gray))
@@ -156,7 +166,7 @@ struct BookCellView: View {
                             .font(.caption)
                             .foregroundStyle(.gray)
                     }
-                } else if isPodcastReady && title == "Board Meeting Q1" {
+                } else if isPodcastReady && viewModel.title == "Financial Review & Planning 2025 Q1" {
                     Button {
                         showPlayer.toggle()
                     } label: {

@@ -26,7 +26,7 @@ struct PodcastSettingsView: View {
         NavigationView {
             Form {
                 // Info Card
-                VStack(spacing: 8) {
+                VStack(spacing: 12) {
                     Image("podcast")
                         .resizable()
                         .scaledToFit()
@@ -34,7 +34,7 @@ struct PodcastSettingsView: View {
                     Text("Book podcast")
                         .font(.title3)
                         .bold()
-                    Text("Listen to your books in a format of a conversational podcast. And more copy comes here for information what’s gonna happen if they click on generating the podcast")
+                    Text("Turn your book into a conversational podcast. Set your preferences and tap “Generate” — it’ll be ready in minutes.")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
