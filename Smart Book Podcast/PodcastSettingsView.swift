@@ -16,11 +16,13 @@ struct PodcastSettingsView: View {
     @State private var selectedLength = "30 min"
     @State private var selectedSpeaker1 = "Jeremy (US English)"
     @State private var selectedSpeaker2 = "Kathy (US English)"
+    @State private var selectedTone = "Neutral"
     @State private var isOfflineAvailable = true
 
     let lengths = ["5 min", "10 min", "15 min", "30 min", "45 min", "60 min"]
     let speakers1 = ["Emily (Australian English)", "Jeremy (US English)", "Tom (UK English)"]
     let speakers2 = ["Kathy (US English)", "Jeremy (US English)", "Tom (UK English)"]
+    let tones = ["Casual", "Neutral", "Professional"]
 
     var body: some View {
         NavigationView {
@@ -68,6 +70,14 @@ struct PodcastSettingsView: View {
                     }
                 }
 
+                Section(header: Text("SPEAKERS TONE")) {
+                    Picker("Tone", selection: $selectedTone) {
+                        ForEach(tones, id: \.self) {
+                            Text($0)
+                        }
+                    }
+                }
+
                 Section(
                     header: Text("OFFLINE AVAILABILITY"),
                     footer: Text("When ON, you can reach your podcast when offline")
@@ -89,7 +99,9 @@ struct PodcastSettingsView: View {
                         dismiss()
                         isGenerating.toggle()
 
-                        Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { timer in
+                        // MARK: - Upload PDF file for processing
+
+                        Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { timer in
                             isGenerating = false
                             isPodcastReady = true
                         }
