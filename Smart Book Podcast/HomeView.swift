@@ -113,6 +113,8 @@ struct BookCellViewModel {
 struct BookCellView: View {
     let viewModel: BookCellViewModel
 
+    @State private var animate = false
+
     @Binding var showSettings: Bool
     @Binding var showPlayer: Bool
     @Binding var isGenerating: Bool
@@ -176,6 +178,12 @@ struct BookCellView: View {
                             .foregroundStyle(.blue)
                             .frame(width: 18, height: 18)
                             .padding()
+                            .scaleEffect(animate ? 1.0 : 0.5)
+                            .onAppear {
+                                withAnimation(.interpolatingSpring(stiffness: 50, damping: 5).delay(0.1)) {
+                                    animate = true
+                                }
+                            }
                     }
                     .frame(width: 48, height: 32)
                     .background(Color.blue.opacity(0.05))

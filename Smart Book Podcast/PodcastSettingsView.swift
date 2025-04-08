@@ -14,14 +14,14 @@ struct PodcastSettingsView: View {
     @Binding var isPodcastReady: Bool
 
     @State private var selectedLength = "30 min"
-    @State private var selectedSpeaker1 = "Jeremy (US English)"
-    @State private var selectedSpeaker2 = "Kathy (US English)"
+    @State private var selectedSpeaker1 = "Emily (Australian English)"
+    @State private var selectedSpeaker2 = "Tom (UK English)"
     @State private var selectedTone = "Neutral"
     @State private var isOfflineAvailable = true
 
     let lengths = ["5 min", "10 min", "15 min", "30 min", "45 min", "60 min"]
-    let speakers1 = ["Emily (Australian English)", "Jeremy (US English)", "Tom (UK English)"]
-    let speakers2 = ["Kathy (US English)", "Jeremy (US English)", "Tom (UK English)"]
+    let speakers1 = ["Emily (Australian English)", "David (US English)", "Tom (UK English)"]
+    let speakers2 = ["Sarah (US English)", "Jeremy (US English)", "Tom (UK English)"]
     let tones = ["Casual", "Neutral", "Professional"]
 
     var body: some View {
